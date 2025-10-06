@@ -1,0 +1,55 @@
+class OddThread extends Thread {
+    private int n;
+
+    OddThread(int n) {
+        this.n = n;
+    }
+
+    public void run() {
+        System.out.println("Odd numbers:");
+        for (int i = 1; i <= n; i++) {
+            if (i % 2 != 0) {
+                System.out.println(i);
+                try {
+                    Thread.sleep(100); // just to simulate concurrency
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
+
+class EvenThread extends Thread {
+    private int n;
+
+    EvenThread(int n) {
+        this.n = n;
+    }
+
+    public void run() {
+        System.out.println("Even numbers:");
+        for (int i = 1; i <= n; i++) {
+            if (i % 2 == 0) {
+                System.out.println(i);
+                try {
+                    Thread.sleep(100); // just to simulate concurrency
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
+
+public class OddEvenThreads {
+    public static void main(String[] args) {
+        int n = 20; // you can change this value or take input from user
+
+        OddThread t1 = new OddThread(n);
+        EvenThread t2 = new EvenThread(n);
+
+        t1.start();
+        t2.start();
+    }
+}
