@@ -1,0 +1,111 @@
+import java.io.*;
+import java.util.*;
+
+class StudentRecordManagement {
+    static final String FILE_NAME = "students.txt";
+
+    // Create / Write new student record (overwrites file)
+    public static void createRecord(String data) throws IOException {
+        FileWriter fw = new FileWriter(FILE_NAME, false); // overwrite
+        fw.write(data + "\n");
+        fw.close();
+        System.out.println("Record created.");
+    }
+
+    // Append new record
+    public static void appendRecord(String data) throws IOException {
+        FileWriter fw = new FileWriter(FILE_NAME, true); // append
+        fw.write(data + "\n");
+        fw.close();
+        System.out.println("Record appended.");
+    }
+
+    // Read all records
+    public static void readRecords() throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(FILE_NAME));
+        String line;
+        System.out.println("---- Student Records ----");
+        while ((line = br.readLine()) != null) {
+            System.out.println(line);
+        }
+        br.close();
+    }
+
+    // Update record (replace old with new)
+    public static void updateRecord(String oldData, String newData) throws IOException {
+        File inputFile = new File(FILE_NAME);
+        File tempFile = new File("temp.txt");
+
+        BufferedReader br = new BufferedReader(new FileReader(inputFile));
+        BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile));
+
+        String line;
+        while ((line = br.readLine()) != null) {
+            if (line.trim().equals(oldData)) {
+                bw.write(newData + "\n");
+            } else {
+                bw.write(line + "\n");
+            }
+        }
+        bw.close();
+        br.close();
+
+        // Replace old file with updated file
+        inputFile.delete();
+        tempFile.renameTo(inputFile);
+
+        System.out.println("Record updated.");
+    }
+
+    public static void main(String[] args) throws IOException {
+        Scanner sc = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("\n--- Student Record Management ---");
+            System.out.println("1. Create Record");
+            System.out.println("2. Append Record");
+            System.out.println("3. Read Records");
+            System.out.println("4. Update Record");
+            System.out.println("5. Exit");
+            System.out.print("Enter choice: ");
+            choice = sc.nextInt();
+            sc.nextLine(); // consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter student record: ");
+                    String data1 = sc.nextLine();
+                    createRecord(data1);
+                    break;
+
+                case 2:
+                    System.out.print("Enter student record to append: ");
+                    String data2 = sc.nextLine();
+                    appendRecord(data2);
+                    break;
+
+                case 3:
+                    readRecords();
+                    break;
+
+                case 4:
+                    System.out.print("Enter record to update: ");
+                    String oldData = sc.nextLine();
+                    System.out.print("Enter new record: ");
+                    String newData = sc.nextLine();
+                    updateRecord(oldData, newData);
+                    break;
+
+                case 5:
+                    System.out.println("Exiting...");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        } while (choice != 5);
+
+        sc.close();
+    }
+}
