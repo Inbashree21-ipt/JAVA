@@ -1,0 +1,94 @@
+```java
+import java.util.Scanner;
+
+class Student {
+    int id;
+    String name;
+    String course;
+
+    Student(int id, String name, String course) {
+        this.id = id;
+        this.name = name;
+        this.course = course;
+    }
+
+    void display() {
+        System.out.println(id + "\t" + name + "\t" + course);
+    }
+}
+
+public class StudentCourseRegistration {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Student students[] = new Student[50];
+        int count = 0;
+        int choice;
+
+        do {
+            System.out.println("\n--- Student Course Registration System ---");
+            System.out.println("1. Register Student");
+            System.out.println("2. View All Registrations");
+            System.out.println("3. Update Course");
+            System.out.println("4. Delete Registration");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Student ID: ");
+                    int id = sc.nextInt();
+                    System.out.print("Enter Student Name: ");
+                    String name = sc.next();
+                    System.out.print("Enter Course Name: ");
+                    String course = sc.next();
+                    students[count++] = new Student(id, name, course);
+                    System.out.println("✅ Student Registered Successfully!");
+                    break;
+
+                case 2:
+                    System.out.println("\nID\tName\tCourse");
+                    for (int i = 0; i < count; i++) {
+                        students[i].display();
+                    }
+                    break;
+
+                case 3:
+                    System.out.print("Enter Student ID to Update Course: ");
+                    int uid = sc.nextInt();
+                    System.out.print("Enter New Course: ");
+                    String newCourse = sc.next();
+                    for (int i = 0; i < count; i++) {
+                        if (students[i].id == uid) {
+                            students[i].course = newCourse;
+                            System.out.println("✅ Course Updated!");
+                        }
+                    }
+                    break;
+
+                case 4:
+                    System.out.print("Enter Student ID to Delete: ");
+                    int did = sc.nextInt();
+                    for (int i = 0; i < count; i++) {
+                        if (students[i].id == did) {
+                            for (int j = i; j < count - 1; j++) {
+                                students[j] = students[j + 1];
+                            }
+                            count--;
+                            System.out.println("✅ Registration Deleted!");
+                        }
+                    }
+                    break;
+
+                case 5:
+                    System.out.println("Exiting...");
+                    break;
+
+                default:
+                    System.out.println("❌ Invalid Choice!");
+            }
+        } while (choice != 5);
+
+        sc.close();
+    }
+}
